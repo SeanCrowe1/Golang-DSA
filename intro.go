@@ -16,3 +16,11 @@ func findMinimum(nums []int) int {
 
 	return min
 }
+
+func summed(nums []int) int {
+	total := 0
+	for _, num := range nums {
+		total += num
+	}
+	return total
+}
