@@ -21,3 +21,17 @@ func getEstimatedSpread(audiencesFollowers []int) float64 {
 
 	return estSpread
 }
+
+func getFollowerPrediction(followerCount int, influencerType string, numMonths int) int {
+	for i := 0; i < numMonths; i++ {
+		switch influencerType {
+		case "fitness":
+			followerCount *= 4
+		case "cosmetic":
+			followerCount *= 3
+		default:
+			followerCount *= 2
+		}
+	}
+	return followerCount
+}

@@ -49,3 +49,50 @@ Pass
 	fmt.Println("---------------------------------")
 	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
 }
+
+func TestGetFollowerPrediction(t *testing.T) {
+	type testCase struct {
+		followerCount  int
+		influencerType string
+		numMonths      int
+		expected       int
+	}
+	testCases := []testCase{
+		{10, "fitness", 1, 40},
+		{10, "fitness", 2, 160},
+		{12, "cosmetic", 4, 972},
+		{15, "business", 4, 240},
+		{10, "fitness", 5, 10240},
+		{10, "fitness", 6, 40960},
+		{10, "fitness", 7, 163840},
+		{10, "fitness", 8, 655360},
+		{10, "tech", 9, 5120},
+	}
+
+	passCount := 0
+	failCount := 0
+
+	for _, test := range testCases {
+		output := getFollowerPrediction(test.followerCount, test.influencerType, test.numMonths)
+		if fmt.Sprintf("%d", output) != fmt.Sprintf("%d", test.expected) {
+			failCount++
+			t.Errorf(`---------------------------------
+Inputs:     (%v, %v, %v)
+Expecting:  %d
+Actual:     %d
+Fail
+`, test.followerCount, test.influencerType, test.numMonths, test.expected, output)
+		} else {
+			passCount++
+			fmt.Printf(`---------------------------------
+Inputs:     (%v, %v, %v)
+Expecting:  %d
+Actual:     %d
+Pass
+`, test.followerCount, test.influencerType, test.numMonths, test.expected, output)
+		}
+	}
+
+	fmt.Println("---------------------------------")
+	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
+}
