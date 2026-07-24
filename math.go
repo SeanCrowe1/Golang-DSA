@@ -23,15 +23,15 @@ func getEstimatedSpread(audiencesFollowers []int) float64 {
 }
 
 func getFollowerPrediction(followerCount int, influencerType string, numMonths int) int {
-	for i := 0; i < numMonths; i++ {
-		switch influencerType {
-		case "fitness":
-			followerCount *= 4
-		case "cosmetic":
-			followerCount *= 3
-		default:
-			followerCount *= 2
-		}
+	n := 0
+	switch influencerType {
+	case "fitness":
+		n = 4
+	case "cosmetic":
+		n = 3
+	default:
+		n = 2
 	}
-	return followerCount
+
+	return followerCount * int(math.Pow(float64(n), float64(numMonths)))
 }
