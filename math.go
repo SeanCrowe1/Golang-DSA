@@ -54,3 +54,13 @@ func decayedFollowers(initialFollowers int, fractionLostDaily float64, days int)
 	multiple := math.Pow(retentionRate, float64(days))
 	return float64(initialFollowers) * multiple
 }
+
+func logScale(data []float64, base float64) []float64 {
+	res := []float64{}
+	base = math.Log(base)
+	for _, num := range data {
+		result := math.Log(num) / base
+		res = append(res, math.Round(result))
+	}
+	return res
+}

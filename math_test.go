@@ -234,3 +234,47 @@ Pass
 	fmt.Println("---------------------------------")
 	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
 }
+
+func TestLogScale(t *testing.T) {
+	type testCase struct {
+		data     []float64
+		base     float64
+		expected []float64
+	}
+	testCases := []testCase{
+		{[]float64{1, 10, 100, 1000}, 10, []float64{0.0, 1.0, 2.0, 3.0}},
+		{[]float64{1, 2, 4, 8}, 2, []float64{0.0, 1.0, 2.0, 3.0}},
+		{[]float64{2, 4, 8, 16}, 2, []float64{1.0, 2.0, 3.0, 4.0}},
+		{[]float64{3, 9, 27, 81}, 3, []float64{1.0, 2.0, 3.0, 4.0}},
+		{[]float64{5, 25, 125, 625}, 5, []float64{1.0, 2.0, 3.0, 4.0}},
+		{[]float64{10, 100, 1000, 10000}, 10, []float64{1.0, 2.0, 3.0, 4.0}},
+		{[]float64{20, 400, 8000, 160000}, 20, []float64{1.0, 2.0, 3.0, 4.0}},
+	}
+
+	passCount := 0
+	failCount := 0
+
+	for _, test := range testCases {
+		output := logScale(test.data, test.base)
+		if fmt.Sprintf("%.2f", output) != fmt.Sprintf("%.2f", test.expected) {
+			failCount++
+			t.Errorf(`---------------------------------
+Inputs:     (%v, %v)
+Expecting:  %v
+Actual:     %v
+Fail
+`, test.data, test.base, test.expected, output)
+		} else {
+			passCount++
+			fmt.Printf(`---------------------------------
+Inputs:     (%v, %v)
+Expecting:  %v
+Actual:     %v
+Pass
+`, test.data, test.base, test.expected, output)
+		}
+	}
+
+	fmt.Println("---------------------------------")
+	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
+}
