@@ -187,3 +187,50 @@ Pass
 	fmt.Println("---------------------------------")
 	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
 }
+
+func TestDecayedFollowers(t *testing.T) {
+	type testCase struct {
+		initialFollowers  int
+		fractionLostDaily float64
+		days              int
+		expected          float64
+	}
+	testCases := []testCase{
+		{200, 0.5, 1, 100},
+		{200, 0.4, 2, 72},
+		{200, 0.05, 3, 171},
+		{1000, 0.005, 2, 990},
+		{1000, 0.05, 3, 857},
+		{1200, 0.55, 8, 2},
+		{1200, 0.09, 16, 265},
+		{0, 0.5, 1, 0},
+		{100, 0, 5, 100},
+	}
+
+	passCount := 0
+	failCount := 0
+
+	for _, test := range testCases {
+		output := math.RoundToEven(decayedFollowers(test.initialFollowers, test.fractionLostDaily, test.days))
+		if fmt.Sprintf("%.2f", output) != fmt.Sprintf("%.2f", test.expected) {
+			failCount++
+			t.Errorf(`---------------------------------
+Inputs:     (%v, %v, %v)
+Expecting:  %.2f
+Actual:     %.2f
+Fail
+`, test.initialFollowers, test.fractionLostDaily, test.days, test.expected, output)
+		} else {
+			passCount++
+			fmt.Printf(`---------------------------------
+Inputs:     (%v, %v, %v)
+Expecting:  %.2f
+Actual:     %.2f
+Pass
+`, test.initialFollowers, test.fractionLostDaily, test.days, test.expected, output)
+		}
+	}
+
+	fmt.Println("---------------------------------")
+	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
+}

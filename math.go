@@ -48,3 +48,9 @@ func numPossibleOrders(numPosts int) int {
 	}
 	return total
 }
+
+func decayedFollowers(initialFollowers int, fractionLostDaily float64, days int) float64 {
+	retentionRate := 1.0 - fractionLostDaily
+	multiple := math.Pow(retentionRate, float64(days))
+	return float64(initialFollowers) * multiple
+}
