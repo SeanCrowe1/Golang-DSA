@@ -35,3 +35,8 @@ func getFollowerPrediction(followerCount int, influencerType string, numMonths i
 
 	return followerCount * int(math.Pow(float64(n), float64(numMonths)))
 }
+
+func getInfluencerScore(numFollowers int, averageEngagementPercentage float64) float64 {
+	base := math.Log2(float64(numFollowers))
+	return base * averageEngagementPercentage
+}

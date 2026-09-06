@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"testing"
 )
 
@@ -90,6 +91,51 @@ Expecting:  %d
 Actual:     %d
 Pass
 `, test.followerCount, test.influencerType, test.numMonths, test.expected, output)
+		}
+	}
+
+	fmt.Println("---------------------------------")
+	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
+}
+
+func TestGetInfluencerScore(t *testing.T) {
+	type testCase struct {
+		followerCount               int
+		averageEngagementPercentage float64
+		expected                    float64
+	}
+	testCases := []testCase{
+		{40000, 0.3, 5.0},
+		{43000, 0.1, 2.0},
+		{100000, 0.6, 10.0},
+		{1, 1, 0.0},
+		{200, 0.8, 6.0},
+		{300000, 0.5, 9.0},
+		{500000, 0.2, 4.0},
+		{750000, 0.7, 14.0},
+	}
+
+	passCount := 0
+	failCount := 0
+
+	for _, test := range testCases {
+		output := math.RoundToEven(getInfluencerScore(test.followerCount, test.averageEngagementPercentage))
+		if fmt.Sprintf("%.2f", output) != fmt.Sprintf("%.2f", test.expected) {
+			failCount++
+			t.Errorf(`---------------------------------
+Inputs:     (%v, %v)
+Expecting:  %.2f
+Actual:     %.2f
+Fail
+`, test.followerCount, test.averageEngagementPercentage, test.expected, output)
+		} else {
+			passCount++
+			fmt.Printf(`---------------------------------
+Inputs:     (%v, %v)
+Expecting:  %.2f
+Actual:     %.2f
+Pass
+`, test.followerCount, test.averageEngagementPercentage, test.expected, output)
 		}
 	}
 
