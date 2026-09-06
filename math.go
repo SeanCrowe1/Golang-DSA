@@ -64,3 +64,16 @@ func logScale(data []float64, base float64) []float64 {
 	}
 	return res
 }
+
+func averageFollowers(nums []int) float64 {
+	if len(nums) == 0 {
+		return 0
+	}
+
+	total := 0
+	for _, num := range nums {
+		total += num
+	}
+
+	return float64(total / len(nums))
+}

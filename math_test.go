@@ -278,3 +278,47 @@ Pass
 	fmt.Println("---------------------------------")
 	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
 }
+
+func TestAverageFollowers(t *testing.T) {
+	type testCase struct {
+		nums     []int
+		expected float64
+	}
+	testCases := []testCase{
+		{[]int{1}, 1},
+		{[]int{1, 2, 3, 4, 5, 6, 7}, 4},
+		{[]int{12, 12, 12}, 12},
+		{[]int{}, 0},
+		{[]int{0}, 0},
+		{[]int{100, 200, 300, 400, 500}, 300},
+		{[]int{5, 10, 200, 3000, 5000}, 1643},
+		{[]int{12_345, 618_222, 58_832_221, 2_180_831_475, 8_663_863_102}, 2180831473},
+	}
+
+	passCount := 0
+	failCount := 0
+
+	for _, test := range testCases {
+		output := math.RoundToEven(averageFollowers(test.nums))
+		if fmt.Sprintf("%.2f", output) != fmt.Sprintf("%.2f", test.expected) {
+			failCount++
+			t.Errorf(`---------------------------------
+Inputs:     (%v)
+Expecting:  %v
+Actual:     %v
+Fail
+`, test.nums, test.expected, output)
+		} else {
+			passCount++
+			fmt.Printf(`---------------------------------
+Inputs:     (%v)
+Expecting:  %v
+Actual:     %v
+Pass
+`, test.nums, test.expected, output)
+		}
+	}
+
+	fmt.Println("---------------------------------")
+	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
+}
