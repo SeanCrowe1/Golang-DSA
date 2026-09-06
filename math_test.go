@@ -142,3 +142,48 @@ Pass
 	fmt.Println("---------------------------------")
 	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
 }
+
+func TestNumPossibleOrders(t *testing.T) {
+	type testCase struct {
+		numPosts int
+		expected int
+	}
+	testCases := []testCase{
+		{2, 2},
+		{3, 6},
+		{5, 120},
+		{1, 1},
+		{6, 720},
+		{7, 5040},
+		{8, 40320},
+		{9, 362880},
+		{11, 39916800},
+	}
+
+	passCount := 0
+	failCount := 0
+
+	for _, test := range testCases {
+		output := numPossibleOrders(test.numPosts)
+		if fmt.Sprintf("%d", output) != fmt.Sprintf("%d", test.expected) {
+			failCount++
+			t.Errorf(`---------------------------------
+Inputs:     (%v)
+Expecting:  %d
+Actual:     %d
+Fail
+`, test.numPosts, test.expected, output)
+		} else {
+			passCount++
+			fmt.Printf(`---------------------------------
+Inputs:     (%v)
+Expecting:  %d
+Actual:     %d
+Pass
+`, test.numPosts, test.expected, output)
+		}
+	}
+
+	fmt.Println("---------------------------------")
+	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
+}

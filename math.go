@@ -40,3 +40,11 @@ func getInfluencerScore(numFollowers int, averageEngagementPercentage float64) f
 	base := math.Log2(float64(numFollowers))
 	return base * averageEngagementPercentage
 }
+
+func numPossibleOrders(numPosts int) int {
+	total := numPosts
+	for i := total - 1; i > 0; i-- {
+		total *= i
+	}
+	return total
+}
