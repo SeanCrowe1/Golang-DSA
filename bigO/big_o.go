@@ -1,4 +1,4 @@
-package main
+package big_o
 
 import (
 	"fmt"
