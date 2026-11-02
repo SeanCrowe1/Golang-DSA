@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 // Runtime complexity = O(n)
@@ -31,4 +32,19 @@ func doesNameExist(firstNames, lastNames []string, fullName string) bool {
 		}
 	}
 	return false
+}
+
+// Runtime complexity = O(nm)
+func getAvgBrandFollowers(allHandles [][]string, brandName string) float64 {
+	total := 0
+
+	for _, handles := range allHandles {
+		for _, handle := range handles {
+			if strings.Contains(handle, brandName) {
+				total++
+			}
+		}
+	}
+
+	return float64(total) / float64(len(allHandles))
 }

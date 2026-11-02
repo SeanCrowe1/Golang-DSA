@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
 )
 
@@ -123,4 +124,83 @@ func getLastNames(num int) []string {
 		}
 	}
 	return names
+}
+
+func TestGetAvgBrandFollowers(t *testing.T) {
+	type testCase struct {
+		numHandles int
+		avgAudSize int
+		brandName  string
+		expected   float64
+	}
+	testCases := []testCase{
+		{10, 1000, "luxa", 437.10},
+		{20, 2000, "luxa", 790.05},
+		{30, 3000, "luxa", 920.10},
+		{40, 4000, "luxa", 1431.58},
+		{80, 8000, "luxa", 2685.40},
+		{160, 16000, "luxa", 4776.32},
+	}
+
+	passCount := 0
+	failCount := 0
+	rng := rand.New(rand.NewSource(1))
+
+	for _, test := range testCases {
+		allHandles := getAllHandles(test.numHandles, test.avgAudSize, rng)
+		output := getAvgBrandFollowers(allHandles, test.brandName)
+		if fmt.Sprintf("%.2f", output) != fmt.Sprintf("%.2f", test.expected) {
+			failCount++
+			t.Errorf(`---------------------------------
+Inputs:     (%v, %v, %v)
+Expecting:  %.2f
+Actual:     %.2f
+Fail
+`, test.numHandles, test.avgAudSize, test.brandName, test.expected, output)
+		} else {
+			passCount++
+			fmt.Printf(`---------------------------------
+Inputs:     (%v, %v, %v)
+Expecting:  %.2f
+Actual:     %.2f
+Pass
+`, test.numHandles, test.avgAudSize, test.brandName, test.expected, output)
+		}
+	}
+
+	fmt.Println("---------------------------------")
+	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
+}
+
+func getAllHandles(num int, audienceSize int, rng *rand.Rand) [][]string {
+	allHandles := make([][]string, 0, num)
+
+	minSize := int(float64(audienceSize) - float64(audienceSize)*1.2)
+	maxSize := int(float64(audienceSize) + float64(audienceSize)*1.2)
+
+	for range num {
+		size := minSize + rng.Intn(maxSize-minSize)
+		allHandles = append(allHandles, getUserHandles(size, rng))
+	}
+
+	return allHandles
+}
+
+func getUserHandles(num int, rng *rand.Rand) []string {
+	handles := []string{}
+	prefixes := []string{
+		"luxaraygirl",
+		"theprimerog",
+		"luxafanboi",
+		"dashlord",
+		"saintrex",
+		"writergurl",
+	}
+
+	for i := range num {
+		prefix := prefixes[rng.Intn(len(prefixes))]
+		handles = append(handles, fmt.Sprintf("%s%d", prefix, i))
+	}
+
+	return handles
 }
